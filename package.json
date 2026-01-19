@@ -1,0 +1,40 @@
+{
+  "name": "@winxs/wind",
+  "version": "0.1.0",
+  "description": "Modern HTTP orchestration client for pagination, retries, batching, and failure-safe APIs",
+  "license": "MIT",
+  "author": "Winxs",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "type": "module",
+  "exports": {
+    "import": "./dist/esm/index.js",
+    "require": "./dist/cjs/index.cjs"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsup"
+  },
+  "keywords": [
+    "http",
+    "fetch",
+    "axios",
+    "client",
+    "pagination",
+    "retry",
+    "batch",
+    "workers"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/winxs/wind"
+  },
+  "devDependencies": {
+    "tsup": "^8.5.1",
+    "typescript": "^5.9.3"
+  }
+}
