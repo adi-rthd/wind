@@ -69,12 +69,11 @@ npm install @winxs/wind
 ## 🧩 Usage
 ### 1️⃣ Quick (Axios-style)
 ```ts
-
 import wind from "@winxs/wind";
 const users = await wind.get("/users");
-The default wind client is shared.
-For production, workers, or multiple APIs — prefer the factory or class.
 ```
+* The default wind client is shared.
+* For production, workers, or multiple APIs — prefer the factory or class.
 
 ### 2️⃣ Recommended: Factory API
 ```ts
@@ -105,8 +104,27 @@ while (true) {
 }
 ```
 ### ✅ Wind way
+#### Config : 
 ```ts
-for await (const page of api.paginate("/users")) {
+let config ={
+  FIXED_PARAMS : {'Env' : 'Prod'},
+  TOTAL_SIZE : 10000,
+  CHUNK_SIZE : 200,
+  stopOnEmpty : true,
+  options : {
+    method : "POST"
+    headers : {authorization : 'Bearer eyeacuh'} 
+    body: {}
+  },
+  PARAMS_KEY?: {
+        CHUNK_PAGINATION_KEY: 'Start',
+        CHUNK_SIZE_KEY: 'Size'
+    };
+}
+```
+```ts
+
+for await (const page of api.paginate("/users", body, config)) {
   console.log(page);
 }
 ```
@@ -183,5 +201,5 @@ const api = wind({ baseURL });
 ```
 #### Wind Pagination
 ```ts
-for await (const page of api.paginate("/users")) {}
+for await (const page of api.paginate("/users", body, config)) {}
 ```
