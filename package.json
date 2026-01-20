@@ -31,7 +31,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/adirathod1822/wind"
+    "url": "https://github.com/adi-rthd/wind"
   },
   "devDependencies": {
     "tsup": "^8.5.1",
