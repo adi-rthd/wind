@@ -29,20 +29,33 @@ jobs:
       - name: Build package
         run: npm run build
 
-      - name: Fetch git tags
-        run: git fetch --tags
-
-      - name: Bump version (if not already tagged)
+      - name: Determine next version from npm
+        id: version
         run: |
-          VERSION=$(node -p "require('./package.json').version")
-          if git rev-parse "v$VERSION" >/dev/null 2>&1; then
-            echo "Version v$VERSION already tagged, skipping bump"
-          else
-            git config user.name "github-actions"
-            git config user.email "github-actions@github.com"
-            npm version patch
-            git push --follow-tags
-          fi
+          PACKAGE_NAME="@winxs/wind"
+
+          CURRENT=$(npm view $PACKAGE_NAME version || echo "0.0.0")
+          echo "Current npm version: $CURRENT"
+
+          NEXT=$(node -e "
+            const v='$CURRENT'.split('.').map(Number);
+            v[2] += 1;
+            console.log(v.join('.'));
+          ")
+
+          echo "Next version: $NEXT"
+          echo "version=$NEXT" >> $GITHUB_OUTPUT
+
+      - name: Set version
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          npm version ${{ steps.version.outputs.version }} --no-git-tag-version
+
+          git add package.json package-lock.json
+          git commit -m "chore(release): v${{ steps.version.outputs.version }}"
+          git tag v${{ steps.version.outputs.version }}
+          git push origin github-automation --tags
 
       - name: Pack package
         run: npm pack
