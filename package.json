@@ -1,6 +1,6 @@
 {
   "name": "@winxs/wind",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Modern HTTP orchestration client for pagination, retries, batching, and failure-safe APIs",
   "license": "MIT",
   "author": "Winxs",
