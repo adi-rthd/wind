@@ -18,12 +18,8 @@ export async function* paginate<T>(fetcher: (url: string, options?: RequestOptio
   if (Array.isArray(pages)) {
     for (const page of pages) {
       const paramsPath = `${CHUNK_PAGINATION_KEY}=${page.CHUNK_START}` + `&${CHUNK_SIZE_KEY}=${page.CHUNK_SIZE}` + FIXED_PARAMS;
-      let args = {
-        ...config.options,
-        body
-      }
 
-      const data = await fetcher(`${path}?${paramsPath}`, args);
+      const data = await fetcher(`${path}?${paramsPath}`, body, { ...config.options });
 
       if (config.stopOnEmpty !== false && (!data || (Array.isArray(data) && data.length === 0))) {
         break;
