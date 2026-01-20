@@ -29,12 +29,20 @@ jobs:
       - name: Build package
         run: npm run build
 
-      - name: Bump version
+      - name: Fetch git tags
+        run: git fetch --tags
+
+      - name: Bump version (if not already tagged)
         run: |
-          git config user.name "github-actions"
-          git config user.email "github-actions@github.com"
-          npm version patch
-          git push --follow-tags
+          VERSION=$(node -p "require('./package.json').version")
+          if git rev-parse "v$VERSION" >/dev/null 2>&1; then
+            echo "Version v$VERSION already tagged, skipping bump"
+          else
+            git config user.name "github-actions"
+            git config user.email "github-actions@github.com"
+            npm version patch
+            git push --follow-tags
+          fi
 
       - name: Pack package
         run: npm pack
