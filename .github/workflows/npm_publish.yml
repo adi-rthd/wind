@@ -42,6 +42,15 @@ jobs:
           echo "//registry.npmjs.org/:_authToken=${NODE_AUTH_TOKEN}" > ~/.npmrc
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          
+      - name: Debug auth
+        run: |
+          if [ -z "$NODE_AUTH_TOKEN" ]; then
+            echo "❌ NODE_AUTH_TOKEN is NOT set"
+            exit 1
+          else
+            echo "✅ NODE_AUTH_TOKEN is set"
+          fi
 
       - name: Publish
         run: npm publish --access=public
